@@ -7,12 +7,18 @@ import com.example.screentimeanalytics.storage.event.Event
 
 
 class StorageHelper(persistentStorageType: PersistentStorageType ) {
-    val agent=when(persistentStorageType){
+   private val agent=when(persistentStorageType){
         PersistentStorageType.ROOM-> RoomStorageAgent()
         else -> FileStorageAgent()
     }
     suspend fun logEvent(event: Event) {
        agent.logEvent(event)
+    }
+    suspend fun getAllEvents(): List<Event>{
+        return agent.getAllEvents()
+    }
+    suspend fun deleteAllEvents(){
+         agent.deleteAllEvents()
     }
 
     fun hasUnsyncedEvents(): Boolean {

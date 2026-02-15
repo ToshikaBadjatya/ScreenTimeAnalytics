@@ -5,6 +5,10 @@ import com.example.screentimeanalytics.network.DefaultAnalyticsClient
 import com.example.screentimeanalytics.network.SyncHelper
 import com.example.screentimeanalytics.storage.StorageHelper
 import com.example.screentimeanalytics.storage.event.Event
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 
 enum class TimeUnit{
@@ -26,12 +30,17 @@ class Analytics private constructor(  val showTimes: Boolean,
 
     private val networkHelper= SyncHelper(analyticsClient)
 
+    private val scope= CoroutineScope(Dispatchers.IO+SupervisorJob())
+
     suspend fun logEvent(event: Event){
         storageHelper.logEvent(event)
     }
 
-    suspend fun syncEvents(){
-      networkHelper.syncEvents()
+     fun syncEvents(){
+         scope.launch {
+             networkHelper.syncEvents(storageHelper.getAllEvents())
+             storageHelper. deleteAllEvents()
+         }
     }
     fun hasUnsyncedEvents(): Boolean{
        return storageHelper.hasUnsyncedEvents()
@@ -74,7 +83,7 @@ class Analytics private constructor(  val showTimes: Boolean,
             )
         }
 
-        fun setAnalyticsClient(analyticsClient: AnalyticsClient) {
+        fun setAnalyticsClient(analyticsClient: AnalyticsClient) =apply{
             this.analyticsClient = analyticsClient
         }
     }
