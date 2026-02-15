@@ -1,14 +1,12 @@
-package com.example.screentimeanalytics.activity
+package com.example.screentimeanalytics
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.screentimeanalytics.ScreenTimeAnalytics
 import com.example.screentimeanalytics.storage.event.Event
 import com.example.screentimeanalytics.utils.AnalyticsScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ScreenTimeActivity : AppCompatActivity() {
+open class ScreenTimeActivity : AppCompatActivity() {
     private var event: Event.Builder?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

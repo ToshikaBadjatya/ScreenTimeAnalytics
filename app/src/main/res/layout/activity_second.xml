@@ -7,17 +7,17 @@
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/tvFirst"
+        android:id="@+id/tvSecond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/firstactivity"
+        android:text="@string/secondactivity"
         android:textSize="22sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/go_next"
+        android:text="@string/go_prev"
         android:layout_marginTop="16dp" />
 </LinearLayout>

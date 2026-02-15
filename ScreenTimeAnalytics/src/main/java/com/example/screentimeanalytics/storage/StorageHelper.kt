@@ -1,5 +1,6 @@
 package com.example.screentimeanalytics.storage
 
+import android.util.Log
 import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.storage.agent.FileStorageAgent
 import com.example.screentimeanalytics.storage.agent.RoomStorageAgent
@@ -12,6 +13,7 @@ class StorageHelper(persistentStorageType: PersistentStorageType ) {
         else -> FileStorageAgent()
     }
     suspend fun logEvent(event: Event) {
+        Log.e("EventCheck","${event.className} ${event.interval.duration}")
        agent.logEvent(event)
     }
     suspend fun getAllEvents(): List<Event>{

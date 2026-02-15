@@ -8,15 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : ScreenTimeActivity() {
+class SecondActivity : ScreenTimeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        val btnNext = findViewById<Button>(com.example.screentimeanalytics.R.id.btnNext)
+        setContentView(R.layout.activity_second)
 
-        btnNext.setOnClickListener {
-            val intent=Intent(this, SecondActivity::class.java)
+        val btnPrev = findViewById<Button>(R.id.btnPrev)
+
+        btnPrev.setOnClickListener {
+            val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

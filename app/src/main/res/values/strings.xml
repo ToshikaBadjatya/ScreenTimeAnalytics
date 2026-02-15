@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ScreenTimeAnalytics</string>
+    <string name="firstactivity">FirstActivity</string>
+    <string name="go_next">Go Next</string>
+    <string name="secondactivity">Second Activity</string>
+    <string name="go_prev">Go Prev</string>
 </resources>

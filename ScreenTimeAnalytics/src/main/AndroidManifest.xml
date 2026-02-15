@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".activity.ScreenTimeActivity"
+            android:name=".ScreenTimeActivity"
             android:exported="false" />
     </application>
 
