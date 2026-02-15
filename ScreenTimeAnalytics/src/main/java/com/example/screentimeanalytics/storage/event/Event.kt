@@ -3,7 +3,7 @@ package com.example.screentimeanalytics.storage.event
 data class Interval(
     val startTime: Long,
     val endTime: Long,
-    val duration: Long
+    val duration: Double
 )
 class Event private constructor(
     val className: String,
@@ -37,7 +37,7 @@ class Event private constructor(
             val interval = Interval(
                 startTime = start,
                 endTime = end,
-                duration = end - start
+                duration = (end - start).toDouble()
             )
 
             return Event(

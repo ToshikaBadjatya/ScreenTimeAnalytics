@@ -11,7 +11,7 @@ data class ScreenTimeResponse(
 
 data class ScreenTimeObject(
     val screenName: String,
-    val totalTime: Long,
+    val totalTime: Double,
     val durations: List<Interval>
 )
 

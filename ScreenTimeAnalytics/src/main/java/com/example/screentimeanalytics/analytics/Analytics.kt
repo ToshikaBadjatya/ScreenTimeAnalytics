@@ -26,7 +26,7 @@ class Analytics private constructor(  val showTimes: Boolean,
 
     private  val  storageHelper= StorageHelper(storageType)
 
-    private val networkHelper= SyncHelper(analyticsClient)
+    private val networkHelper= SyncHelper(showTimes,timeUnit,showPercentage,analyticsClient)
 
 
     suspend fun logEvent(event: Event){
