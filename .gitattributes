@@ -1,0 +1,12 @@
+# Ignore generated build files for GitHub language stats
+build/** linguist-generated
+*/build/** linguist-generated
+
+# Ignore reports
+reports/** linguist-generated
+
+# Ignore HTML reports
+*.html linguist-generated
+
+# Ignore CSS if any
+*.css linguist-generated
