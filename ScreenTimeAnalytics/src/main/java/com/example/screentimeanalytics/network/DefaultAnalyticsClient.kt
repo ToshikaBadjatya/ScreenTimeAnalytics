@@ -2,8 +2,8 @@ package com.example.screentimeanalytics.network
 
 import com.example.screentimeanalytics.AnalyticsClient
 
-class SyncHelper(val analyticsClient: AnalyticsClient) {
-    fun syncEvents() {
+class DefaultAnalyticsClient: AnalyticsClient {
+    override suspend fun sendEvent() {
 
     }
 }
