@@ -15,7 +15,7 @@ import com.example.screentimeanalytics.analytics.SyncWorker
 import com.example.screentimeanalytics.analytics.TimeUnit
 
 object ScreenTimeAnalytics {
-    private lateinit var analytics: Analytics
+    var analytics: Analytics?=null
     private lateinit var screenTimeConfig: ScreenTimeConfig
 
     fun init(context: Context,config: ScreenTimeConfig){
@@ -25,8 +25,8 @@ object ScreenTimeAnalytics {
             .setStorageType(PersistentStorageType.ROOM)
             .setAnalyticsClient(config.analyticsClient)
             .build()
-        if(analytics.hasUnsyncedEvents()){
-            analytics.syncEvents()
+        if(analytics!!.hasUnsyncedEvents()){
+            analytics!!.syncEvents()
         }
 
         (context.applicationContext as? Application)?.let {application ->

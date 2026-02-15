@@ -5,9 +5,7 @@ import com.example.screentimeanalytics.network.DefaultAnalyticsClient
 import com.example.screentimeanalytics.network.SyncHelper
 import com.example.screentimeanalytics.storage.StorageHelper
 import com.example.screentimeanalytics.storage.event.Event
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import com.example.screentimeanalytics.utils.AnalyticsScope
 import kotlinx.coroutines.launch
 
 
@@ -30,14 +28,13 @@ class Analytics private constructor(  val showTimes: Boolean,
 
     private val networkHelper= SyncHelper(analyticsClient)
 
-    private val scope= CoroutineScope(Dispatchers.IO+SupervisorJob())
 
     suspend fun logEvent(event: Event){
         storageHelper.logEvent(event)
     }
 
      fun syncEvents(){
-         scope.launch {
+         AnalyticsScope.scope.launch {
              networkHelper.syncEvents(storageHelper.getAllEvents())
              storageHelper. deleteAllEvents()
          }

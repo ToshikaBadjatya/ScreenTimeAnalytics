@@ -17,10 +17,14 @@ class Event private constructor(
 
         fun start(): Builder = apply {
             startTime = System.currentTimeMillis()
+            endTime=null
         }
 
         fun stop(): Builder = apply {
             endTime = System.currentTimeMillis()
+        }
+        fun isRunning(): Boolean{
+            return endTime==null
         }
 
         fun build(): Event {
