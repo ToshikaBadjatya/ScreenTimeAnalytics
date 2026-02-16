@@ -10,8 +10,8 @@ import com.example.screentimeanalytics.storage.event.Event
 
 class StorageHelper(persistentStorageType: PersistentStorageType ,context: Context) {
     private val agent=when(persistentStorageType){
-        PersistentStorageType.DATABASE-> DatabaseStorageAgent(context)
-        else -> FileStorageAgent()
+        PersistentStorageType.DATABASE-> DatabaseStorageAgent.getInstance(context)
+        else -> FileStorageAgent.getInstance(context.applicationContext)
     }
     suspend fun logEvent(event: Event) {
         Log.e("EventCheck","${event.className} ${event.interval.duration}")
