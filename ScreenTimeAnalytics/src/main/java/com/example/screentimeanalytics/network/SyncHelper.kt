@@ -1,22 +1,26 @@
 package com.example.screentimeanalytics.network
 
 import com.example.screentimeanalytics.AnalyticsClient
+import com.example.screentimeanalytics.ScreenTimeInterval
 import com.example.screentimeanalytics.ScreenTimeObject
 import com.example.screentimeanalytics.ScreenTimeResponse
 import com.example.screentimeanalytics.analytics.TimeUnit
+import com.example.screentimeanalytics.globals.Globals
 import com.example.screentimeanalytics.storage.event.Event
+import com.example.screentimeanalytics.storage.event.Interval
+import com.example.screentimeanalytics.utils.formatDateAndTime
+import java.util.Locale
 import java.util.UUID
 
 
-class SyncHelper(
-    val showTimes: Boolean,
-    val timeUnit: TimeUnit,
-    val showPercentage: Boolean,
-    val analyticsClient: AnalyticsClient
-) {
+class SyncHelper() {
     suspend fun syncEvents(events: List<Event>) {
+        if(Globals.screenTimeConfig==null){
+            return
+        }
+
         val response=clubEventsTogether(events)
-        analyticsClient.sendEvent(response)
+        Globals.screenTimeConfig!!.analyticsClient.sendEvent(response)
     }
     fun clubEventsTogether(events: List<Event>): ScreenTimeResponse {
 
@@ -24,20 +28,21 @@ class SyncHelper(
 
         val screenTimeObjects = groupedByScreen.map { (screenName, screenEvents) ->
 
-            val intervals = screenEvents.map { it.interval.copy(duration = it.interval.duration.toTimeUnit(timeUnit)) }
+            val intervals = screenEvents.map { it.interval.copy(duration = it.interval.duration.toTimeUnit(Globals.screenTimeConfig!!.timeUnit)) }
 
             val totalTime = intervals.sumOf { it.duration }
 
             ScreenTimeObject(
                 screenName = screenName,
-                totalTime = totalTime.toTimeUnit(timeUnit),
-                durations = intervals
+                totalTime = totalTime.toTimeUnit(Globals.screenTimeConfig!!.timeUnit),
+                durations = intervals.map { it.toScreenTimeInterval(Globals.screenTimeConfig!!.locale,
+                    Globals.screenTimeConfig!!.timeUnit) }
             )
         }
 
         val grandTotal = screenTimeObjects.sumOf { it.totalTime }.toDouble()
 
-        val screenTimePercents = if (grandTotal > 0&& showPercentage) {
+        val screenTimePercents = if (grandTotal > 0&& Globals.screenTimeConfig!!.showPercentage) {
             screenTimeObjects.associate {
                 it.screenName to ((it.totalTime / grandTotal) * 100)
             }
@@ -47,7 +52,7 @@ class SyncHelper(
 
         return ScreenTimeResponse(
             syncId = UUID.randomUUID().toString(),
-            screenTimeObjects = if(showTimes) screenTimeObjects else emptyList(),
+            screenTimeObjects = if(Globals.screenTimeConfig!!.showTimes) screenTimeObjects else emptyList(),
             screenTimePercents = screenTimePercents
         )
     }
@@ -57,6 +62,16 @@ class SyncHelper(
             TimeUnit.MINUTES -> this / 60_000.0
             TimeUnit.HOURS -> this / 3_600_000.0
         }
+    }
+    private fun Interval.toScreenTimeInterval(locale: Locale,timeUnit: TimeUnit): ScreenTimeInterval{
+        val startNew=startTime.formatDateAndTime(locale)
+        val endNew=endTime.formatDateAndTime(locale)
+        val pred= when (timeUnit) {
+            TimeUnit.SECONDS -> "s"
+            TimeUnit.MINUTES ->"min"
+            TimeUnit.HOURS -> "hr"
+        }
+        return ScreenTimeInterval(startNew.first,endNew.first,startNew.second,endNew.second,"${duration} ${pred}")
     }
 
 }

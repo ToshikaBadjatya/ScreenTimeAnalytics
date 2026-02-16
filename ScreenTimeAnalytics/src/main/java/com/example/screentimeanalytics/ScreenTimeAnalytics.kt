@@ -6,6 +6,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Constraints
+import androidx.work.Data
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -13,19 +14,17 @@ import com.example.screentimeanalytics.analytics.Analytics
 import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.analytics.SyncWorker
 import com.example.screentimeanalytics.analytics.TimeUnit
+import com.example.screentimeanalytics.globals.Globals
 import com.example.screentimeanalytics.utils.AnalyticsScope
 import kotlinx.coroutines.launch
 
 object ScreenTimeAnalytics {
-    var analytics: Analytics?=null
-    private lateinit var screenTimeConfig: ScreenTimeConfig
+     var analytics: Analytics?=null
 
     fun init(context: Context,config: ScreenTimeConfig){
-        screenTimeConfig=config
-        analytics= Analytics.Builder().showTimes(config.showTimes)
-            .timeUnit(config.timeUnit).showPercentage(config.showPercentage)
+        Globals.screenTimeConfig=config
+        analytics= Analytics.Builder()
             .setStorageType(PersistentStorageType.DATABASE)
-            .setAnalyticsClient(config.analyticsClient)
             .build(context.applicationContext)
         AnalyticsScope.scope.launch {
             if(analytics!!.hasUnsyncedEvents()){

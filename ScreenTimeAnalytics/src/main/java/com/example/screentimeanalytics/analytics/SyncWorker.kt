@@ -15,8 +15,7 @@ class SyncWorker(
     override suspend fun doWork(): Result {
         return try {
          if(analytics==null){
-             analytics = Analytics.Builder().showTimes(true)
-                 .timeUnit(TimeUnit.MINUTES).showPercentage(true)
+             analytics = Analytics.Builder()
                  .setStorageType(PersistentStorageType.DATABASE)
                  .build(this.applicationContext)
          }

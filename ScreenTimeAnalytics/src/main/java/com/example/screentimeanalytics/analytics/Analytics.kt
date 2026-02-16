@@ -9,6 +9,7 @@ import com.example.screentimeanalytics.storage.StorageHelper
 import com.example.screentimeanalytics.storage.event.Event
 import com.example.screentimeanalytics.utils.AnalyticsScope
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 
 enum class TimeUnit{
@@ -20,16 +21,13 @@ enum class PersistentStorageType{
     FILE_SYSTEM,
     DATABASE
 }
-class Analytics private constructor(  val showTimes: Boolean,
-                                      val timeUnit: TimeUnit,
-                                      val showPercentage: Boolean,
-                                      val analyticsClient: AnalyticsClient,
+class Analytics private constructor(
     val storageType: PersistentStorageType,
     val context: Context){
 
     private  val  storageHelper= StorageHelper(storageType,context)
 
-    private val networkHelper= SyncHelper(showTimes,timeUnit,showPercentage,analyticsClient)
+    private val networkHelper= SyncHelper()
 
 
     suspend fun logEvent(event: Event){
@@ -51,46 +49,21 @@ class Analytics private constructor(  val showTimes: Boolean,
     }
 
 
-    //Builder
-
     class Builder {
-
-        private  var analyticsClient: AnalyticsClient = DefaultAnalyticsClient()
-        private var showTimes: Boolean = true
-        private var timeUnit: TimeUnit = TimeUnit.SECONDS
-        private var showPercentage: Boolean = false
 
         private var storageType: PersistentStorageType= PersistentStorageType.DATABASE
 
-        fun showTimes(value: Boolean) = apply {
-            this.showTimes = value
-        }
-
-        fun timeUnit(unit: TimeUnit) = apply {
-            this.timeUnit = unit
-        }
-
-        fun showPercentage(value: Boolean) = apply {
-            this.showPercentage = value
-        }
         fun setStorageType(storageType: PersistentStorageType) = apply {
             this.storageType = storageType
         }
 
         fun build(context: Context): Analytics {
             return Analytics(
-                showTimes = showTimes,
-                timeUnit = timeUnit,
-                showPercentage = showPercentage,
                 storageType=storageType,
-                analyticsClient = analyticsClient,
                 context = context.applicationContext
             )
         }
 
-        fun setAnalyticsClient(analyticsClient: AnalyticsClient) =apply{
-            this.analyticsClient = analyticsClient
-        }
     }
 
 }

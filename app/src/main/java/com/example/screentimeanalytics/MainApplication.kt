@@ -2,6 +2,7 @@ package com.example.screentimeanalytics
 
 import android.app.Application
 import com.example.screentimeanalytics.analytics.TimeUnit
+import java.util.Locale
 
 
 class MainApplication: Application() {
