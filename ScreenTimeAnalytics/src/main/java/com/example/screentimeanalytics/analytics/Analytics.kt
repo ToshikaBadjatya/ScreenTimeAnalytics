@@ -1,5 +1,7 @@
 package com.example.screentimeanalytics.analytics
 
+import android.content.Context
+import android.util.Log
 import com.example.screentimeanalytics.AnalyticsClient
 import com.example.screentimeanalytics.network.DefaultAnalyticsClient
 import com.example.screentimeanalytics.network.SyncHelper
@@ -16,15 +18,16 @@ enum class TimeUnit{
 }
 enum class PersistentStorageType{
     FILE_SYSTEM,
-    ROOM
+    DATABASE
 }
 class Analytics private constructor(  val showTimes: Boolean,
                                       val timeUnit: TimeUnit,
                                       val showPercentage: Boolean,
                                       val analyticsClient: AnalyticsClient,
-    val storageType: PersistentStorageType){
+    val storageType: PersistentStorageType,
+    val context: Context){
 
-    private  val  storageHelper= StorageHelper(storageType)
+    private  val  storageHelper= StorageHelper(storageType,context)
 
     private val networkHelper= SyncHelper(showTimes,timeUnit,showPercentage,analyticsClient)
 
@@ -34,12 +37,16 @@ class Analytics private constructor(  val showTimes: Boolean,
     }
 
      fun syncEvents(){
+         Log.e("DefaultAnalyticsClient","sync called")
          AnalyticsScope.scope.launch {
+             Log.e("DefaultAnalyticsClient","${storageHelper.getAllEvents()}")
+
              networkHelper.syncEvents(storageHelper.getAllEvents())
              storageHelper. deleteAllEvents()
          }
     }
-    fun hasUnsyncedEvents(): Boolean{
+    suspend fun hasUnsyncedEvents(): Boolean{
+
        return storageHelper.hasUnsyncedEvents()
     }
 
@@ -53,7 +60,7 @@ class Analytics private constructor(  val showTimes: Boolean,
         private var timeUnit: TimeUnit = TimeUnit.SECONDS
         private var showPercentage: Boolean = false
 
-        private var storageType: PersistentStorageType= PersistentStorageType.ROOM
+        private var storageType: PersistentStorageType= PersistentStorageType.DATABASE
 
         fun showTimes(value: Boolean) = apply {
             this.showTimes = value
@@ -70,13 +77,14 @@ class Analytics private constructor(  val showTimes: Boolean,
             this.storageType = storageType
         }
 
-        fun build(): Analytics {
+        fun build(context: Context): Analytics {
             return Analytics(
                 showTimes = showTimes,
                 timeUnit = timeUnit,
                 showPercentage = showPercentage,
                 storageType=storageType,
-                analyticsClient = analyticsClient
+                analyticsClient = analyticsClient,
+                context = context.applicationContext
             )
         }
 

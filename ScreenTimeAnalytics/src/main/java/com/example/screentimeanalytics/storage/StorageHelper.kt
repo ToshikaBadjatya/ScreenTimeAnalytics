@@ -1,15 +1,16 @@
 package com.example.screentimeanalytics.storage
 
+import android.content.Context
 import android.util.Log
 import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.storage.agent.FileStorageAgent
-import com.example.screentimeanalytics.storage.agent.RoomStorageAgent
+import com.example.screentimeanalytics.storage.agent.database.DatabaseStorageAgent
 import com.example.screentimeanalytics.storage.event.Event
 
 
-class StorageHelper(persistentStorageType: PersistentStorageType ) {
-   private val agent=when(persistentStorageType){
-        PersistentStorageType.ROOM-> RoomStorageAgent()
+class StorageHelper(persistentStorageType: PersistentStorageType ,context: Context) {
+    private val agent=when(persistentStorageType){
+        PersistentStorageType.DATABASE-> DatabaseStorageAgent(context)
         else -> FileStorageAgent()
     }
     suspend fun logEvent(event: Event) {
@@ -23,7 +24,7 @@ class StorageHelper(persistentStorageType: PersistentStorageType ) {
          agent.deleteAllEvents()
     }
 
-    fun hasUnsyncedEvents(): Boolean {
-        return false
+    suspend fun hasUnsyncedEvents(): Boolean {
+        return agent.getAllEvents().isNotEmpty()
     }
 }

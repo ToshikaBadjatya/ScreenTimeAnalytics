@@ -17,8 +17,8 @@ class SyncWorker(
          if(analytics==null){
              analytics = Analytics.Builder().showTimes(true)
                  .timeUnit(TimeUnit.MINUTES).showPercentage(true)
-                 .setStorageType(PersistentStorageType.ROOM)
-                 .build()
+                 .setStorageType(PersistentStorageType.DATABASE)
+                 .build(this.applicationContext)
          }
             if(analytics!!.hasUnsyncedEvents()){
                analytics!!.syncEvents()

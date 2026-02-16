@@ -5,7 +5,7 @@ data class Interval(
     val endTime: Long,
     val duration: Double
 )
-class Event private constructor(
+class Event (
     val className: String,
     val interval: Interval
 ) {

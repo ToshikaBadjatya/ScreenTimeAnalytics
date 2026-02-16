@@ -13,6 +13,8 @@ import com.example.screentimeanalytics.analytics.Analytics
 import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.analytics.SyncWorker
 import com.example.screentimeanalytics.analytics.TimeUnit
+import com.example.screentimeanalytics.utils.AnalyticsScope
+import kotlinx.coroutines.launch
 
 object ScreenTimeAnalytics {
     var analytics: Analytics?=null
@@ -22,13 +24,14 @@ object ScreenTimeAnalytics {
         screenTimeConfig=config
         analytics= Analytics.Builder().showTimes(config.showTimes)
             .timeUnit(config.timeUnit).showPercentage(config.showPercentage)
-            .setStorageType(PersistentStorageType.ROOM)
+            .setStorageType(PersistentStorageType.DATABASE)
             .setAnalyticsClient(config.analyticsClient)
-            .build()
-        if(analytics!!.hasUnsyncedEvents()){
-            analytics!!.syncEvents()
+            .build(context.applicationContext)
+        AnalyticsScope.scope.launch {
+            if(analytics!!.hasUnsyncedEvents()){
+                analytics!!.syncEvents()
+            }
         }
-
         (context.applicationContext as? Application)?.let {application ->
             val observer = AppLifecycleObserver(
                 onForeground = {
