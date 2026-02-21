@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "ScreenTimeAnalytics"
 include(":app")
 include(":ScreenTimeAnalytics")
+include(":annotations")
+include(":annotation-processor")

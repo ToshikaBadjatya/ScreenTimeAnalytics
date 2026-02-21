@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -52,4 +53,6 @@ dependencies {
 
     //library
     implementation(project(":ScreenTimeAnalytics"))
+    implementation(project(":annotations"))
+    kapt(project(":annotation-processor"))
 }
