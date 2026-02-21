@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "520593625151",
+    "project_id": "analyticssample-95036",
+    "storage_bucket": "analyticssample-95036.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520593625151:android:4756ea769291174aace88a",
+        "android_client_info": {
+          "package_name": "com.example.screentimeanalytics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8vHP0LRrgTgdIa59hltg-qt1G41C8_kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
