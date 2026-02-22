@@ -1,6 +1,7 @@
 package com.example.screentimeanalytics
 
 import android.app.Application
+import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.analytics.TimeUnit
 
 import java.util.Locale
@@ -16,6 +17,8 @@ class MainApplication: Application() {
                 .showPercentage(true)
                 .timeUnit(TimeUnit.SECONDS)
                 .analyticsClient(analyticsClient)
+                .setLocale(Locale.getDefault())
+                .setStorage(PersistentStorageType.DATABASE)
                 .build()
         ScreenTimeAnalytics.init(this, config)
 

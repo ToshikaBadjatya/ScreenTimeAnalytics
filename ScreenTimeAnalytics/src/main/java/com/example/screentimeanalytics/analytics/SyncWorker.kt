@@ -16,7 +16,6 @@ class SyncWorker(
         return try {
          if(analytics==null){
              analytics = Analytics.Builder()
-                 .setStorageType(PersistentStorageType.DATABASE)
                  .build(this.applicationContext)
          }
             if(analytics!!.hasUnsyncedEvents()){

@@ -1,5 +1,6 @@
 package com.example.screentimeanalytics
 
+import com.example.screentimeanalytics.analytics.PersistentStorageType
 import com.example.screentimeanalytics.analytics.TimeUnit
 import com.example.screentimeanalytics.network.DefaultAnalyticsClient
 import java.util.Locale
@@ -10,12 +11,14 @@ data class ScreenTimeConfig private constructor(
     val showTimes: Boolean,
     val showPercentage: Boolean,
     val timeUnit: TimeUnit,
-    val locale: Locale
+    val locale: Locale,
+    val storageType: PersistentStorageType
 ) {
 
 
     class Builder {
 
+        private  var storageType: PersistentStorageType= PersistentStorageType.DATABASE
         private var analyticsClient: AnalyticsClient = DefaultAnalyticsClient()
         private var showTimes: Boolean = true
         private var showPercentage: Boolean = true
@@ -40,6 +43,9 @@ data class ScreenTimeConfig private constructor(
         fun setLocale(locale: Locale) = apply {
             this.locale = locale
         }
+        fun setStorage(storageType: PersistentStorageType) = apply {
+            this.storageType = storageType
+        }
         fun build(): ScreenTimeConfig {
             require(!(showPercentage && !showTimes)) {
                 "showPercentage requires showTimes to be enabled"
@@ -50,7 +56,8 @@ data class ScreenTimeConfig private constructor(
                 showTimes = showTimes,
                 showPercentage = showPercentage,
                 timeUnit = timeUnit,
-                locale=locale
+                locale=locale,
+                storageType=storageType
             )
         }
     }

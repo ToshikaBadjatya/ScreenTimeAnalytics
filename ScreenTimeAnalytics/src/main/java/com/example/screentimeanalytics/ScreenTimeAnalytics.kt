@@ -24,7 +24,6 @@ object ScreenTimeAnalytics {
     fun init(context: Context,config: ScreenTimeConfig){
         Globals.screenTimeConfig=config
         analytics= Analytics.Builder()
-            .setStorageType(PersistentStorageType.DATABASE)
             .build(context.applicationContext)
         AnalyticsScope.scope.launch {
             if(analytics!!.hasUnsyncedEvents()){

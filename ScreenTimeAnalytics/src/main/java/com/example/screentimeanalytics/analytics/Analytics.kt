@@ -22,10 +22,9 @@ enum class PersistentStorageType{
     DATABASE
 }
 class Analytics private constructor(
-    val storageType: PersistentStorageType,
     val context: Context){
 
-    private  val  storageHelper= StorageHelper(storageType,context)
+    private  val  storageHelper= StorageHelper(context)
 
     private val networkHelper= SyncHelper()
 
@@ -51,15 +50,8 @@ class Analytics private constructor(
 
     class Builder {
 
-        private var storageType: PersistentStorageType= PersistentStorageType.DATABASE
-
-        fun setStorageType(storageType: PersistentStorageType) = apply {
-            this.storageType = storageType
-        }
-
         fun build(context: Context): Analytics {
             return Analytics(
-                storageType=storageType,
                 context = context.applicationContext
             )
         }
