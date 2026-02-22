@@ -29,6 +29,33 @@
 - Supports syncing data to **Firebase**, **custom backends**, or other servers  
 
 ---
+## **Usage**
+
+Initialize the library in MainApplication
+```kotlin
+class MainApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        val analyticsClient= FirebaseAnalyticsClient()
+        val config =
+            ScreenTimeConfig.Builder()
+                .analyticsClient(analyticsClient)
+                .build()
+        ScreenTimeAnalytics.init(this, config)
+
+    }
+}
+```
+
+Mark the activities that need to be tracked
+
+```kotlin
+@TrackActivity
+class MainActivity : ScreenTimeActivity() {
+}
+```
+
+------
 
 ## **Customization in ScreenTimeAnalytics**
 
@@ -64,6 +91,18 @@ ScreenTimeConfig.Builder()
   - Define the unit of time measurement (e.g., **seconds**, **milliseconds**, **minutes**) based on reporting needs.
 
 - **Analytics Client**
+
   - Plug in a custom analytics client to control how and where data is processed or synced.
+  - Sample client for eg
+```kotlin
+   class FirebaseAnalyticsClient: AnalyticsClient {
+    private val database: FirebaseDatabase = Firebase.database
+    private val endpoint = "analytics"
+
+    override suspend fun sendEvent(response: ScreenTimeResponse) {
+    database.reference.child(endpoint).push().setValue(response)
+    }
+    }
+```
 
 This configuration-first approach ensures ScreenTimeAnalytics can seamlessly adapt to different application architectures and analytics strategies.
