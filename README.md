@@ -26,7 +26,44 @@
 
 ### **Easy Sync Integration**
 - Simple configuration for defining **sync actions**  
-- Supports syncing data to **Firebase**, **custom backends**, or other servers  
+- Supports syncing data to **Firebase**, **custom backends**, or other servers 
+---
+
+## **Installation**
+
+To integrate ScreenTimeAnalytics library into your Android project, follow these simple steps:
+
+Update your `settings.gradle` file with the following dependency:
+
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' } // this one
+    }
+}
+```
+
+Update your module level `build.gradle` file with the following dependencies:
+
+```gradle
+dependencies {
+    implementation 'com.github.ToshikaBadjatya:ScreenTimeAnalytics:1.0.0'
+    implementation 'com.github.ToshikaBadjatya:annotations:1.0.0'
+    kapt 'com.github.ToshikaBadjatya:annotation-processor:1.0.0'
+}
+```
+
+Don't forget to apply the kapt plugin in your `build.gradle`:
+
+```gradle
+plugins {
+    id 'kotlin-kapt'
+}
+```
+
 
 ---
 ## **Usage**
