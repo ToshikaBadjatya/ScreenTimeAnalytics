@@ -54,5 +54,8 @@ dependencies {
     //library
     implementation(project(":ScreenTimeAnalytics"))
     implementation(project(":annotations"))
+    
+    //annotation processor
     kapt(project(":annotation-processor"))
+
 }

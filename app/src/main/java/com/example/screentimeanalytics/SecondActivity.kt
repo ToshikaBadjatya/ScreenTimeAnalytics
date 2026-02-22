@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.annotations.TrackActivity
 
 @TrackActivity
-class SecondActivity : AppCompatActivity() {
+class SecondActivity : ScreenTimeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

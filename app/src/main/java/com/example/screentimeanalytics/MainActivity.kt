@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.annotations.TrackActivity
 
 @TrackActivity
-class MainActivity : AppCompatActivity() {
+class MainActivity : ScreenTimeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
