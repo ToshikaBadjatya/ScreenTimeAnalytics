@@ -94,9 +94,8 @@ Update your module level `build.gradle` file with the following dependencies:
 
 ```gradle
 dependencies {
-    implementation 'com.github.ToshikaBadjatya:ScreenTimeAnalytics:1.0.0'
-    implementation 'com.github.ToshikaBadjatya:annotations:1.0.0'
-    kapt 'com.github.ToshikaBadjatya:annotation-processor:1.0.0'
+     implementation ("com.github.ToshikaBadjatya:ScreenTimeAnalytics:1.0.0")
+     kapt ("com.github.ToshikaBadjatya.ScreenTimeAnalytics:annotation-processor:1.0.0")
 }
 ```
 
