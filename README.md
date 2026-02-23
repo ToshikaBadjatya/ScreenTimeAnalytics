@@ -28,6 +28,52 @@
 - Simple configuration for defining **sync actions**  
 - Supports syncing data to **Firebase**, **custom backends**, or other servers 
 ---
+## **System Diagram or Workflow**
+```mermaid
+     A[Application] --> X[Destroy]
+        X --> Y[Sync events]
+        Y--->G
+    %% App Initialization
+    A[Application] --> E[Build ScreenTimeConfig]
+    E --> F[Initialize ScreenTimeAnalytics]
+    F --> G[ScreenTimeAnalytics]
+
+      
+
+
+    %% Activity Tracking
+    H[Trackable Activity<br/>extends ScreenTimeActivity]
+    H --> I[Event.Builder.start()]
+    I --> K[User Leaves Screen<br/>onStop / onDestroy]
+    K --> L[Event.Builder.stop()]
+    L --> M[Build ScreenTimeEvent]
+
+    %% Logging Flow
+    M --> N[ScreenTimeAnalytics.logEvent(event)]
+    N --> G
+
+   
+
+    %% Persistence
+    Q --> S[Persist Event in Database]
+    R --> T[Persist Event in File System]
+
+      %% Network Abstraction
+    
+    G--> U[Work Manager]
+    U-->V[Network Helper] 
+    G --> W[Unsynced Events]
+    W-->V[Network Helper]
+    V-->Z[Aggregate Events]
+    Z-->ZZ[Analytics Client]
+
+     %% Storage Abstraction
+    G --> O
+    O[Storage Helper] --> P[StorageAgent Interface]
+    P --> Q[DatabaseStorageAgent]
+    P --> R[FileSystemStorageAgent]
+    
+   ``` 
 
 ## **Installation**
 
