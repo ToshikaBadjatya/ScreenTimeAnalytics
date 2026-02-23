@@ -18,6 +18,7 @@ class FileStorageAgent private constructor(val context: Context) : StorageAgent 
     
     private val gson = Gson()
     private val fileName = "config.txt"
+    var newLine="##@@$"
     
     override suspend fun logEvent(event: Event) {
         try {
@@ -37,9 +38,11 @@ class FileStorageAgent private constructor(val context: Context) : StorageAgent 
 
     override suspend fun getAllEvents(): List<Event> {
         try {
-           return readFromFile(context).split("\n").map{
-               convertToObject(it)
-           }
+           val events= readFromFile(context).split(newLine).map{
+
+               convertToObject<Event>(it)
+           }.filter { it!=null } as List<Event>
+            return events
         } catch (e: FileNotFoundException) {
         } catch (e: IOException) {
         } catch (e: Exception) {
@@ -50,11 +53,19 @@ class FileStorageAgent private constructor(val context: Context) : StorageAgent 
     
     private suspend fun writeToFile(data: String) {
         try {
+            val file = context.getFileStreamPath(fileName)
+            val fileExists = file?.exists() == true && file.length() > 0
+            
             val outputStreamWriter =
                 OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_APPEND))
+            
+            if (fileExists) {
+                outputStreamWriter.write(newLine)
+            }
             outputStreamWriter.write(data)
             outputStreamWriter.close()
         } catch (e: IOException) {
+            Log.e("FileStorageAgent", "Failed to write to file: ${e.message}")
         }
     }
     
@@ -71,7 +82,7 @@ class FileStorageAgent private constructor(val context: Context) : StorageAgent 
                 val stringBuilder = StringBuilder()
 
                 while ((bufferedReader.readLine().also { receiveString = it }) != null) {
-                    stringBuilder.append("\n").append(receiveString)
+                    stringBuilder.append(newLine).append(receiveString)
                 }
 
                 inputStream.close()
@@ -83,9 +94,13 @@ class FileStorageAgent private constructor(val context: Context) : StorageAgent 
 
         return ret
     }
-    fun<T> convertToObject(jsonString: String):T{
-        val type = object : TypeToken<List<Event>>() {}.type
-        return gson.fromJson(jsonString, type)
+    fun<T> convertToObject(jsonString: String):T?{
+        val type = object : TypeToken<Event>() {}.type
+        return try {
+            gson.fromJson(jsonString, type)
+        }catch (e: java.lang.Exception){
+            null
+        }
 
     }
     fun<T> convertToString(obj:T): String?{

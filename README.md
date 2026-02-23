@@ -52,11 +52,7 @@ graph TD
     M --> N[ScreenTimeAnalytics.logEvent event]
     N --> G
 
-    %% Storage Abstraction
-    G --> O[Storage Helper]
-    O --> P[StorageAgent Interface]
-    P --> Q[DatabaseStorageAgent]
-    P --> R[FileSystemStorageAgent]
+   
 
     %% Persistence
     Q --> S[Persist Event in Database]
@@ -69,6 +65,12 @@ graph TD
     W --> V
     V --> Z[Aggregate Events]
     Z --> ZZ[Analytics Client]
+    
+     %% Storage Abstraction
+    G --> O[Storage Helper]
+    O --> P[StorageAgent Interface]
+    P --> Q[DatabaseStorageAgent]
+    P --> R[FileSystemStorageAgent]
 ``` 
 
 ## **Installation**

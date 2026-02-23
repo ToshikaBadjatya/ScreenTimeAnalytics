@@ -16,7 +16,6 @@ import java.util.UUID
 
 class SyncHelper() {
     suspend fun syncEvents(events: List<Event>) {
-        Log.e("eventCheck","$events")
 
         if(Globals.screenTimeConfig==null){
             return
@@ -28,7 +27,6 @@ class SyncHelper() {
         Globals.screenTimeConfig!!.analyticsClient.sendEvent(response)
     }
     fun clubEventsTogether(events: List<Event>): ScreenTimeResponse {
-        Log.e("eventCheck","$events")
 
         val groupedByScreen = events.groupBy { it.className }
 

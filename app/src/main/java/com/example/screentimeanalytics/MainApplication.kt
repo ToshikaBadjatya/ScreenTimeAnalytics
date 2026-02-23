@@ -20,7 +20,7 @@ class MainApplication: Application() {
                 .timeUnit(TimeUnit.SECONDS)
                 .analyticsClient(analyticsClient)
                 .setLocale(Locale.getDefault())
-                .setStorage(PersistentStorageType.FILE_SYSTEM)
+                .setStorage(PersistentStorageType.DATABASE)
                 .build()
         ScreenTimeAnalytics.init(this, config)
 

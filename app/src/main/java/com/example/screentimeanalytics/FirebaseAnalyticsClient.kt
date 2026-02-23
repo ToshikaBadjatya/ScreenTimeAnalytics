@@ -13,7 +13,10 @@ class FirebaseAnalyticsClient: AnalyticsClient {
     
     override suspend fun sendEvent(response: ScreenTimeResponse) {
         try {
-
+            Log.e("syncResponse","check $response")
+            if(!Const.LOG_TO_FIREBASE){
+                return
+            }
             val ref = database.reference.child(endpoint).push()
             
             ref.setValue(response)
