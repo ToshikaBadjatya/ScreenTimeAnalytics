@@ -31,14 +31,15 @@
 ## **System Diagram or Workflow**
 ```mermaid
 graph TD
+    
+    %% App Destroy
+    A --> X[Destroy]
+    X --> Y[Sync events]
+    Y --> G
     %% App Initialization
     A[Application] --> E[Build ScreenTimeConfig]
     E --> F[Initialize ScreenTimeAnalytics]
     F --> G[ScreenTimeAnalytics]
-    
-    A --> X[Destroy]
-    X --> Y[Sync events]
-    Y --> G
 
     %% Activity Tracking
     H[Trackable Activity<br/>extends ScreenTimeActivity]

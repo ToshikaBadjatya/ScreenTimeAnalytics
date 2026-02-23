@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
+import kotlinx.coroutines.tasks.await
 
 
 class FirebaseAnalyticsClient: AnalyticsClient {
@@ -11,6 +12,14 @@ class FirebaseAnalyticsClient: AnalyticsClient {
     private val endpoint = "analytics"
     
     override suspend fun sendEvent(response: ScreenTimeResponse) {
-        database.reference.child(endpoint).push().setValue(response)
+        try {
+
+            val ref = database.reference.child(endpoint).push()
+            
+            ref.setValue(response)
+                .await()
+            
+        } catch (e: Exception) {
+        }
     }
 }

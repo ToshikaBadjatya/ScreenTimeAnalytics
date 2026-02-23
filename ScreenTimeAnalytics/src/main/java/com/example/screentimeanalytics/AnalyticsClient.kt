@@ -1,7 +1,8 @@
 package com.example.screentimeanalytics
 
 import com.example.screentimeanalytics.storage.event.Interval
-
+import kotlinx.serialization.Serializable
+@Serializable
 data class ScreenTimeInterval(
     val startDate: String,
     val endDate: String,
@@ -10,12 +11,13 @@ data class ScreenTimeInterval(
     val duration: String
 )
 
+@Serializable
 data class ScreenTimeResponse(
     val syncId: String,
     val screenTimeObjects: List<ScreenTimeObject>,
     val screenTimePercents: Map<String, Double>
 )
-
+@Serializable
 data class ScreenTimeObject(
     val screenName: String,
     val totalTime: Double,

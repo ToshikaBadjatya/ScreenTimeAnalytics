@@ -1,5 +1,6 @@
 package com.example.screentimeanalytics.network
 
+import android.util.Log
 import com.example.screentimeanalytics.AnalyticsClient
 import com.example.screentimeanalytics.ScreenTimeInterval
 import com.example.screentimeanalytics.ScreenTimeObject
@@ -15,14 +16,19 @@ import java.util.UUID
 
 class SyncHelper() {
     suspend fun syncEvents(events: List<Event>) {
+        Log.e("eventCheck","$events")
+
         if(Globals.screenTimeConfig==null){
             return
         }
 
+
         val response=clubEventsTogether(events)
+
         Globals.screenTimeConfig!!.analyticsClient.sendEvent(response)
     }
     fun clubEventsTogether(events: List<Event>): ScreenTimeResponse {
+        Log.e("eventCheck","$events")
 
         val groupedByScreen = events.groupBy { it.className }
 

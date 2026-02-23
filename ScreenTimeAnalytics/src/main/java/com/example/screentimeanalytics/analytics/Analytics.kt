@@ -8,7 +8,9 @@ import com.example.screentimeanalytics.network.SyncHelper
 import com.example.screentimeanalytics.storage.StorageHelper
 import com.example.screentimeanalytics.storage.event.Event
 import com.example.screentimeanalytics.utils.AnalyticsScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 
@@ -30,13 +32,13 @@ class Analytics private constructor(
 
 
     suspend fun logEvent(event: Event){
-        storageHelper.logEvent(event)
+        withContext(Dispatchers.IO){
+            storageHelper.logEvent(event)
+        }
     }
 
      fun syncEvents(){
-         Log.e("DefaultAnalyticsClient","sync called")
          AnalyticsScope.scope.launch {
-             Log.e("DefaultAnalyticsClient","${storageHelper.getAllEvents()}")
 
              networkHelper.syncEvents(storageHelper.getAllEvents())
              storageHelper. deleteAllEvents()
