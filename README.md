@@ -30,50 +30,45 @@
 ---
 ## **System Diagram or Workflow**
 ```mermaid
-     A[Application] --> X[Destroy]
-        X --> Y[Sync events]
-        Y--->G
+graph TD
     %% App Initialization
     A[Application] --> E[Build ScreenTimeConfig]
     E --> F[Initialize ScreenTimeAnalytics]
     F --> G[ScreenTimeAnalytics]
-
-      
-
+    
+    A --> X[Destroy]
+    X --> Y[Sync events]
+    Y --> G
 
     %% Activity Tracking
     H[Trackable Activity<br/>extends ScreenTimeActivity]
-    H --> I[Event.Builder.start()]
+    H --> I[Event.Builder.start]
     I --> K[User Leaves Screen<br/>onStop / onDestroy]
-    K --> L[Event.Builder.stop()]
+    K --> L[Event.Builder.stop]
     L --> M[Build ScreenTimeEvent]
 
     %% Logging Flow
-    M --> N[ScreenTimeAnalytics.logEvent(event)]
+    M --> N[ScreenTimeAnalytics.logEvent event]
     N --> G
 
-   
+    %% Storage Abstraction
+    G --> O[Storage Helper]
+    O --> P[StorageAgent Interface]
+    P --> Q[DatabaseStorageAgent]
+    P --> R[FileSystemStorageAgent]
 
     %% Persistence
     Q --> S[Persist Event in Database]
     R --> T[Persist Event in File System]
 
-      %% Network Abstraction
-    
-    G--> U[Work Manager]
-    U-->V[Network Helper] 
+    %% Network Abstraction
+    G --> U[Work Manager]
+    U --> V[Network Helper]
     G --> W[Unsynced Events]
-    W-->V[Network Helper]
-    V-->Z[Aggregate Events]
-    Z-->ZZ[Analytics Client]
-
-     %% Storage Abstraction
-    G --> O
-    O[Storage Helper] --> P[StorageAgent Interface]
-    P --> Q[DatabaseStorageAgent]
-    P --> R[FileSystemStorageAgent]
-    
-   ``` 
+    W --> V
+    V --> Z[Aggregate Events]
+    Z --> ZZ[Analytics Client]
+``` 
 
 ## **Installation**
 
