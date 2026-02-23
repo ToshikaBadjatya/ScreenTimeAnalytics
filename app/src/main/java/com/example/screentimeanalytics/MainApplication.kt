@@ -24,5 +24,6 @@ class MainApplication: Application() {
                 .build()
         ScreenTimeAnalytics.init(this, config)
 
+
     }
 }
