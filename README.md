@@ -196,8 +196,13 @@ https://github.com/user-attachments/assets/070edd23-313b-4771-823b-883b1dbe2c72
 
 
 
+
+
 ---
 
 ## **Synced Output Example**
 <img width="1094" height="429" alt="Screenshot 2026-02-23 at 7 51 54 PM" src="https://github.com/user-attachments/assets/41f14845-204e-44bc-9155-552452ede8e2" />
 
+---
+### **Medium**
+https://medium.com/@badjatyatoshika91311/screentimeanalytics-5f6ca39cee37
