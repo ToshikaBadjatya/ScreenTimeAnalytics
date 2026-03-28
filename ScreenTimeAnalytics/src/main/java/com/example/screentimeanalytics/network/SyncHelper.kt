@@ -29,12 +29,14 @@ class SyncHelper() {
     fun clubEventsTogether(events: List<Event>): ScreenTimeResponse {
 
         val groupedByScreen = events.groupBy { it.className }
+        var grandTotal=0.0
 
         val screenTimeObjects = groupedByScreen.map { (screenName, screenEvents) ->
 
-            val intervals = screenEvents.map { it.interval.copy(duration = it.interval.duration.toTimeUnit(Globals.screenTimeConfig!!.timeUnit)) }
+            val intervals = screenEvents.map { it.interval.copy(duration = it.interval.duration.toTimeUnitDouble(Globals.screenTimeConfig!!.timeUnit)) }
 
             val totalTime = intervals.sumOf { it.duration }
+            grandTotal += totalTime
 
             ScreenTimeObject(
                 screenName = screenName,
@@ -44,11 +46,13 @@ class SyncHelper() {
             )
         }
 
-        val grandTotal = screenTimeObjects.sumOf { it.totalTime }.toDouble()
+
 
         val screenTimePercents = if (grandTotal > 0&& Globals.screenTimeConfig!!.showPercentage) {
             screenTimeObjects.associate {
-                it.screenName to ((it.totalTime / grandTotal) * 100)
+                val percentage = ((it.totalTime.getTimeValue() / grandTotal) * 100)
+                val rounded = kotlin.math.round(percentage * 100) / 100
+                it.screenName to  String.format("%.2f %s", (rounded), "%")
             }
         } else {
             emptyMap()
@@ -60,12 +64,22 @@ class SyncHelper() {
             screenTimePercents = screenTimePercents
         )
     }
-    private fun Double.toTimeUnit(timeUnit: TimeUnit): Double {
-        return when (timeUnit) {
+    private fun Double.toTimeUnitDouble(timeUnit: TimeUnit): Double {
+        val time= when (timeUnit) {
             TimeUnit.SECONDS -> this / 1_000.0
             TimeUnit.MINUTES -> this / 60_000.0
             TimeUnit.HOURS -> this / 3_600_000.0
         }
+        return time
+    }
+    private fun Double.toTimeUnit(timeUnit: TimeUnit): String {
+        val pred= when (timeUnit) {
+            TimeUnit.SECONDS -> "s"
+            TimeUnit.MINUTES ->"min"
+            TimeUnit.HOURS -> "hr"
+        }
+
+        return String.format("%.2f %s", this, pred)
     }
     private fun Interval.toScreenTimeInterval(locale: Locale,timeUnit: TimeUnit): ScreenTimeInterval{
         val startNew=startTime.formatDateAndTime(locale)
@@ -78,4 +92,8 @@ class SyncHelper() {
         return ScreenTimeInterval(startNew.first,endNew.first,startNew.second,endNew.second,"${duration} ${pred}")
     }
 
+}
+
+private fun String.getTimeValue(): Double {
+    return this.split(" ")[0].toDouble()
 }

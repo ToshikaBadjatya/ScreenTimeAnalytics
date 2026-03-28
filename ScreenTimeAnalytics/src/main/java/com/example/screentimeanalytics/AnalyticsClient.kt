@@ -15,12 +15,12 @@ data class ScreenTimeInterval(
 data class ScreenTimeResponse(
     val syncId: String,
     val screenTimeObjects: List<ScreenTimeObject>,
-    val screenTimePercents: Map<String, Double>
+    val screenTimePercents: Map<String, String>
 )
 @Serializable
 data class ScreenTimeObject(
     val screenName: String,
-    val totalTime: Double,
+    val totalTime: String,
     val durations: List<ScreenTimeInterval>
 )
 
